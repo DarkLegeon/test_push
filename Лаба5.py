@@ -9,9 +9,6 @@ def go_robot(s):
         return 5
 
 
-def proverka(x, s):
-    return x.isdigit() and s - int(x) > 0 and 1 <= int(x) <= 3
-
 
 def go_player(s):
     while True:
