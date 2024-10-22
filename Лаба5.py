@@ -1,64 +1,52 @@
-import random
+from random import randint
 
-a = random.randint(1, 3)
-s = random.randint(4, 30)
-
-
-def game(s, a):
-    try:
-        while True:
-            print(f'Количество камней = {s}')
-            if s == 3:
-                print("Ваш ход: Введите количество камней которое хотите забрать")
-                n = int(input())
-                if n < 0 or n > 3:
-                    return "Вы можете ввести число от 1 до 3"
-                s -= n
-                if s == 0:
-                    print(f'Количество камней = {s}')
-                    return "Вы вышли за пределы"
-                if s == 1:
-                    print(f'Количество камней = {s}')
-                    return "Победа игрока"
-                if s == 2:
-                    s -= 1
-                    print(f'Количество камней = {s}')
-                    return "Победа компьютера"
-            if s == 2:
-                print("Ваш ход: Введите количество камней которое хотите забрать")
-                n = int(input())
-                if n < 0 or n > 3:
-                    return "Вы можете ввести число от 1 до 3"
-                s -= n
-                if s < 1:
-                    print(f'Количество камней = {s}')
-                    return "Вы вышли за пределы"
-                if s == 1:
-                    print(f'Количество камней = {s}')
-                    return "Победа игрока"
-            print("Ваш ход: Введите количество камней которое хотите забрать")
-            n = int(input())
-            if n < 0 or n > 3:
-                return "Вы можете ввести число от 1 до 3"
-            s -= n
-            if s == 1:
-                print(f'Количество камней = {s}')
-                return "Победа игрока"
-            if s == 2:
-                s -= 1
-                print(f'Количество камней = {s}')
-                return "Победа компьютера"
-            if s == 3:
-                s -= 2
-                print(f'Количество камней = {s}')
-                return "Победа компьютера"
-            if s == 4:
-                s -= 3
-                print(f'Количество камней = {s}')
-                return "Победа компьютера"
-            s -= a
-    except ValueError:
-        return "Вы можете вводить цифры от 1 до 3"
+def go_robot(s):
+    if s == 5 or s > 8:
+        return s - randint(1, 3)
+    if s <= 4:
+        return 1
+    if 6 <= s <= 8:
+        return 5
 
 
-print(game(s, a))
+def proverka(x, s):
+    return x.isdigit() and s - int(x) > 0 and 1 <= int(x) <= 3
+
+
+def go_player(s):
+    while True:
+        x = input('Сколько камней вы хотите убрать: ')
+        if proverka(x, s):
+            return int(x)
+        print('Введите соответствующее число')
+
+
+s = randint(4, 30)
+print(f'Всего {s} камней')
+answer = input('Вы хотите делать ход первым? (+/-)\n')
+if answer == '+':
+    while True:
+        print(f'Ваш ход')
+        Hod_igroka = go_player(s)
+        s -= Hod_igroka
+        print(f'Осталось {s} камней')
+        if s == 1:
+            exit('Победил игрок')
+        print(f'Ходит робот')
+        s = go_robot(s)
+        print(f'Осталось {s} камней')
+        if s == 1:
+            exit('Победил робот')
+else:
+    while True:
+        print(f'Ходит робот')
+        s = go_robot(s)
+        print(f'Осталось {s} камней')
+        if s == 1:
+            exit('Победил робот')
+        print(f'Ваш ход')
+        Hod_igroka = go_player(s)
+        s -= Hod_igroka
+        print(f'Осталось {s} камней')
+        if s == 1:
+            exit('Победил игрок')
